@@ -1,5 +1,5 @@
-from flask import Flask
-from models import db
+from flask import Flask, make_response
+from models import db, Doctor
 from flask_migrate import Migrate
 
 app = Flask( __name__ )
@@ -10,7 +10,16 @@ db.init_app( app )
 
 @app.route( '/doctors' )
 def doctors():
-    return 'doctor route'
+    doc_list = []
+    for d in Doctor.query.all():
+        doc_list.append( {
+            'id': d.id,
+            'name': d.name,
+            'created_at': d.created_at,
+            'updated_at': d.updated_at
+        } )
+    return make_response( doc_list )
+    
 
 if __name__ == '__main__':
     app.run( port = 5555, debug = True )

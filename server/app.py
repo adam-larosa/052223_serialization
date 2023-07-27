@@ -8,16 +8,15 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 migrate = Migrate( app, db )
 db.init_app( app )
 
+
 @app.route( '/doctors' )
 def doctors():
+    # a list comprehension which is the same as the following for loop
+    # doc_list = [ d.to_dict() for d in Doctor.query.all() ]
     doc_list = []
     for d in Doctor.query.all():
-        doc_list.append( {
-            'id': d.id,
-            'name': d.name,
-            'created_at': d.created_at,
-            'updated_at': d.updated_at
-        } )
+        doc_list.append( d.to_dict() )
+
     return make_response( doc_list )
     
 
